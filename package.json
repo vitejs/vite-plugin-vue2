@@ -41,13 +41,15 @@
   "devDependencies": {
     "@jridgewell/gen-mapping": "^0.3.1",
     "@jridgewell/trace-mapping": "^0.3.13",
+    "@rollup/pluginutils": "^4.2.1",
     "debug": "^4.3.4",
     "esno": "^0.16.3",
+    "hash-sum": "^2.0.0",
     "rollup": "^2.75.6",
     "slash": "^4.0.0",
     "source-map": "^0.6.1",
     "unbuild": "^0.7.4",
-    "vite": "^3.0.0-alpha.12",
-    "vue": "^2.7.0-alpha.9"
+    "vite": "^2.9.12",
+    "vue": "^2.7.0-alpha.12"
   }
 }

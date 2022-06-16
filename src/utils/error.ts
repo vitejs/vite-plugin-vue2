@@ -1,26 +1,24 @@
-import type { CompilerError } from 'vue/compiler-sfc'
 import type { RollupError } from 'rollup'
+import { WarningMessage } from 'vue/compiler-sfc'
 
 export function createRollupError(
   id: string,
-  error: CompilerError | SyntaxError
+  error: Error | WarningMessage
 ): RollupError {
-  const { message, name, stack } = error
-  const rollupError: RollupError = {
-    id,
-    plugin: 'vue',
-    message,
-    name,
-    stack
-  }
-
-  if ('code' in error && error.loc) {
-    rollupError.loc = {
-      file: id,
-      line: error.loc.start.line,
-      column: error.loc.start.column
+  if ('msg' in error) {
+    return {
+      id,
+      plugin: 'vue',
+      message: error.msg,
+      name: 'vue-compiler-error'
+    }
+  } else {
+    return {
+      id,
+      plugin: 'vue',
+      message: error.message,
+      name: error.name,
+      stack: error.stack
     }
   }
-
-  return rollupError
 }

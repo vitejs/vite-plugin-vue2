@@ -20,7 +20,7 @@ export async function transformStyle(
     ...options.style,
     filename: descriptor.filename,
     id: `data-v-${descriptor.id}`,
-    isProd: options.isProduction,
+    // isProd: options.isProduction,
     source: code,
     scoped: block.scoped,
     ...(options.cssDevSourcemap
@@ -41,7 +41,7 @@ export async function transformStyle(
       if (error.line && error.column) {
         error.loc = {
           file: descriptor.filename,
-          line: error.line + block.loc.start.line,
+          line: error.line + getLine(descriptor.source, block.start),
           column: error.column
         }
       }
@@ -62,5 +62,16 @@ export async function transformStyle(
   return {
     code: result.code,
     map: map
+  }
+}
+
+function getLine(source: string, start: number) {
+  const lines = source.split(/\r?\n/g)
+  let cur = 0
+  for (let i = 0; i < lines.length; i++) {
+    cur += lines[i].length
+    if (cur >= start) {
+      return i
+    }
   }
 }

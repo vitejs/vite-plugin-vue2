@@ -10,13 +10,12 @@ import type * as _compiler from 'vue/compiler-sfc'
 
 export function resolveCompiler(root: string): typeof _compiler {
   // resolve from project root first, then fallback to peer dep (if any)
-  const compiler =
-    tryRequire('vue/compiler-sfc', root) || tryRequire('vue/compiler-sfc')
+  const compiler = tryRequire('vue/compiler-sfc', root)
 
   if (!compiler) {
     throw new Error(
       `Failed to resolve vue/compiler-sfc.\n` +
-        `@vitejs/plugin-vue requires vue (>=3.2.25) ` +
+        `@vitejs/plugin-vue2 requires vue (>=2.7.0) ` +
         `to be present in the dependency tree.`
     )
   }
@@ -25,6 +24,7 @@ export function resolveCompiler(root: string): typeof _compiler {
 }
 
 const _require = createRequire(import.meta.url)
+
 function tryRequire(id: string, from?: string) {
   try {
     return from

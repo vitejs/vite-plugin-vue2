@@ -1,7 +1,6 @@
 import fs from 'fs'
 import type { Plugin, ViteDevServer } from 'vite'
-import { createFilter } from 'vite'
-/* eslint-disable import/no-duplicates */
+import { createFilter } from '@rollup/pluginutils'
 import type {
   SFCBlock,
   SFCScriptCompileOptions,
@@ -9,7 +8,6 @@ import type {
   SFCTemplateCompileOptions
 } from 'vue/compiler-sfc'
 import type * as _compiler from 'vue/compiler-sfc'
-/* eslint-enable import/no-duplicates */
 import { resolveCompiler } from './compiler'
 import { parseVueRequest } from './utils/query'
 import { getDescriptor, getSrcDescriptor } from './utils/descriptorCache'
@@ -34,32 +32,9 @@ export interface Options {
   template?: Partial<SFCTemplateCompileOptions>
   style?: Partial<SFCStyleCompileOptions>
 
-  /**
-   * Transform Vue SFCs into custom elements.
-   * - `true`: all `*.vue` imports are converted into custom elements
-   * - `string | RegExp`: matched files are converted into custom elements
-   *
-   * @default /\.ce\.vue$/
-   */
-  customElement?: boolean | string | RegExp | (string | RegExp)[]
-
-  /**
-   * Enable Vue reactivity transform (experimental).
-   * https://github.com/vuejs/core/tree/master/packages/reactivity-transform
-   * - `true`: transform will be enabled for all vue,js(x),ts(x) files except
-   *           those inside node_modules
-   * - `string | RegExp`: apply to vue + only matched files (will include
-   *                      node_modules, so specify directories in necessary)
-   * - `false`: disable in all cases
-   *
-   * @default false
-   */
-  reactivityTransform?: boolean | string | RegExp | (string | RegExp)[]
-
-  /**
-   * Use custom compiler-sfc instance. Can be used to force a specific version.
-   */
-  compiler?: typeof _compiler
+  // customElement?: boolean | string | RegExp | (string | RegExp)[]
+  // reactivityTransform?: boolean | string | RegExp | (string | RegExp)[]
+  // compiler?: typeof _compiler
 }
 
 export interface ResolvedOptions extends Options {
@@ -74,24 +49,12 @@ export interface ResolvedOptions extends Options {
 export default function vuePlugin(rawOptions: Options = {}): Plugin {
   const {
     include = /\.vue$/,
-    exclude,
-    customElement = /\.ce\.vue$/,
-    reactivityTransform = false
+    exclude
+    // customElement = /\.ce\.vue$/,
+    // reactivityTransform = false
   } = rawOptions
 
   const filter = createFilter(include, exclude)
-
-  const customElementFilter =
-    typeof customElement === 'boolean'
-      ? () => customElement
-      : createFilter(customElement)
-
-  const refTransformFilter =
-    reactivityTransform === false
-      ? () => false
-      : reactivityTransform === true
-      ? createFilter(/\.(j|t)sx?$/, /node_modules/)
-      : createFilter(reactivityTransform)
 
   let options: ResolvedOptions = {
     isProduction: process.env.NODE_ENV === 'production',
@@ -99,8 +62,8 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     ...rawOptions,
     include,
     exclude,
-    customElement,
-    reactivityTransform,
+    // customElement,
+    // reactivityTransform,
     root: process.cwd(),
     sourceMap: true,
     cssDevSourcemap: false,
@@ -117,25 +80,13 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
       return handleHotUpdate(ctx, options)
     },
 
-    config(config) {
-      return {
-        define: {
-          __VUE_OPTIONS_API__: config.define?.__VUE_OPTIONS_API__ ?? true,
-          __VUE_PROD_DEVTOOLS__: config.define?.__VUE_PROD_DEVTOOLS__ ?? false
-        },
-        ssr: {
-          external: ['vue', '@vue/server-renderer']
-        }
-      }
-    },
-
     configResolved(config) {
       options = {
         ...options,
         root: config.root,
+        isProduction: config.isProduction,
         sourceMap: config.command === 'build' ? !!config.build.sourcemap : true,
         cssDevSourcemap: config.css?.devSourcemap ?? false,
-        isProduction: config.isProduction,
         devToolsEnabled:
           !!config.define!.__VUE_PROD_DEVTOOLS__ || !config.isProduction
       }
@@ -146,7 +97,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     },
 
     buildStart() {
-      options.compiler = options.compiler || resolveCompiler(options.root)
+      options.compiler = resolveCompiler(options.root)
     },
 
     async resolveId(id) {
@@ -200,29 +151,22 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
         return
       }
       if (!filter(filename) && !query.vue) {
-        if (
-          !query.vue &&
-          refTransformFilter(filename) &&
-          options.compiler.shouldTransformRef(code)
-        ) {
-          return options.compiler.transformRef(code, {
-            filename,
-            sourceMap: true
-          })
-        }
+        // if (
+        //   !query.vue &&
+        //   refTransformFilter(filename) &&
+        //   options.compiler.shouldTransformRef(code)
+        // ) {
+        //   return options.compiler.transformRef(code, {
+        //     filename,
+        //     sourceMap: true
+        //   })
+        // }
         return
       }
 
       if (!query.vue) {
         // main request
-        return transformMain(
-          code,
-          filename,
-          options,
-          this,
-          ssr,
-          customElementFilter(filename)
-        )
+        return transformMain(code, filename, options, this, ssr)
       } else {
         // sub block request
         const descriptor = query.src

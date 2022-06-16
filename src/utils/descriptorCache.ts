@@ -2,13 +2,13 @@ import fs from 'fs'
 import path from 'path'
 import { createHash } from 'crypto'
 import slash from 'slash'
-import type { CompilerError, SFCDescriptor } from 'vue/compiler-sfc'
+import type { SFCDescriptor } from 'vue/compiler-sfc'
 import type { ResolvedOptions, VueQuery } from '..'
 
 // compiler-sfc should be exported so it can be re-used
 export interface SFCParseResult {
   descriptor: SFCDescriptor
-  errors: Array<CompilerError | SyntaxError>
+  errors: Error[]
 }
 
 const cache = new Map<string, SFCDescriptor>()
@@ -19,10 +19,18 @@ export function createDescriptor(
   source: string,
   { root, isProduction, sourceMap, compiler }: ResolvedOptions
 ): SFCParseResult {
-  const { descriptor, errors } = compiler.parse(source, {
-    filename,
-    sourceMap
-  })
+  let descriptor: SFCDescriptor
+  let errors: any[] = []
+  try {
+    descriptor = compiler.parse({
+      source,
+      filename,
+      sourceMap
+    })
+  } catch (e) {
+    errors = [e]
+    descriptor = compiler.parse({ source: ``, filename })
+  }
 
   // ensure the path is normalized in a way that is consistent inside
   // project (relative to root) and on different systems.

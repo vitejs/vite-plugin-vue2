@@ -3,26 +3,30 @@ lockfileVersion: 5.4
 specifiers:
   '@jridgewell/gen-mapping': ^0.3.1
   '@jridgewell/trace-mapping': ^0.3.13
+  '@rollup/pluginutils': ^4.2.1
   debug: ^4.3.4
   esno: ^0.16.3
+  hash-sum: ^2.0.0
   rollup: ^2.75.6
   slash: ^4.0.0
   source-map: ^0.6.1
   unbuild: ^0.7.4
-  vite: ^3.0.0-alpha.12
-  vue: ^2.7.0-alpha.9
+  vite: ^2.9.12
+  vue: ^2.7.0-alpha.12
 
 devDependencies:
   '@jridgewell/gen-mapping': 0.3.1
   '@jridgewell/trace-mapping': 0.3.13
+  '@rollup/pluginutils': 4.2.1
   debug: 4.3.4
   esno: 0.16.3
+  hash-sum: 2.0.0
   rollup: 2.75.6
   slash: 4.0.0
   source-map: 0.6.1
   unbuild: 0.7.4
-  vite: 3.0.0-alpha.12
-  vue: 2.7.0-alpha.9
+  vite: 2.9.12
+  vue: 2.7.0-alpha.12
 
 packages:
 
@@ -404,8 +408,8 @@ packages:
       '@types/node': 18.0.0
     dev: true
 
-  /@vue/compiler-sfc/2.7.0-alpha.9:
-    resolution: {integrity: sha512-S+nSISulD3ptFUX/axaXcf5Dnc0nkTi6Jp0U5Hs+Mcz96MYWSjOSL6bVY8pHH08eWkcl3fWT+r70qIKx8tVUPw==}
+  /@vue/compiler-sfc/2.7.0-alpha.12:
+    resolution: {integrity: sha512-IDcGU9+SLLisEbbFBYqfXM5wLZ4lEpIhhhJ8qcf475/V47QWCwRT9D/AuRQuYUfGEceF78hl5ul+qYonwyhLGA==}
     dependencies:
       '@babel/parser': 7.18.5
       postcss: 8.4.14
@@ -1263,6 +1267,10 @@ packages:
       function-bind: 1.1.1
     dev: true
 
+  /hash-sum/2.0.0:
+    resolution: {integrity: sha512-WdZTbAByD+pHfl/g9QSsBIIwy8IT+EsPiKDs0KNX+zSHhdDLFKdZu0BQHljvO+0QI/BasbMSUa8wYNCZTvhslg==}
+    dev: true
+
   /hookable/5.1.1:
     resolution: {integrity: sha512-7qam9XBFb+DijNBthaL1k/7lHU2TEMZkWSyuqmU3sCQze1wFm5w9AlEx30PD7a+QVAjOy6Ec2goFwe1YVyk2uA==}
     dev: true
@@ -1710,23 +1718,20 @@ packages:
       - supports-color
     dev: true
 
-  /vite/3.0.0-alpha.12:
-    resolution: {integrity: sha512-AfVkyyr4OQMRxdf51KqzeZbx2r8aOd4+cYZDveVd2LTWTpOLmQ/j48KTdpCiqzNFEYG/KngySnqanlEIGVksPQ==}
-    engines: {node: '>=14.6.0'}
+  /vite/2.9.12:
+    resolution: {integrity: sha512-suxC36dQo9Rq1qMB2qiRorNJtJAdxguu5TMvBHOc/F370KvqAe9t48vYp+/TbPKRNrMh/J55tOUmkuIqstZaew==}
+    engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
       less: '*'
       sass: '*'
       stylus: '*'
-      terser: ^5.4.0
     peerDependenciesMeta:
       less:
         optional: true
       sass:
         optional: true
       stylus:
-        optional: true
-      terser:
         optional: true
     dependencies:
       esbuild: 0.14.44
@@ -1737,10 +1742,10 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vue/2.7.0-alpha.9:
-    resolution: {integrity: sha512-D3SjydiFgyCVApLeL8WBvTyz1KVmfdPiL9CQ4bIdSY/M/VXFVqIAl0h3BYjN9ty/vOkt/KBKI3qQ41XO9t1Hww==}
+  /vue/2.7.0-alpha.12:
+    resolution: {integrity: sha512-F68ysLiUlPHRTQp7Mw6ceAblG1C9eqzKoJdHdZGuGyoKq9BeZS4PxrcxCN/3kvtz/qiyTsEhlqVmAHHLXZq2SA==}
     dependencies:
-      '@vue/compiler-sfc': 2.7.0-alpha.9
+      '@vue/compiler-sfc': 2.7.0-alpha.12
       csstype: 3.1.0
     dev: true
 

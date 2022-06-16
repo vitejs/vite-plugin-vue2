@@ -1,4 +1,3 @@
-import _debug from 'debug'
 import type { SFCBlock, SFCDescriptor } from 'vue/compiler-sfc'
 import type { HmrContext, ModuleNode } from 'vite'
 import {
@@ -8,8 +7,6 @@ import {
 } from './utils/descriptorCache'
 import { getResolvedScript, setResolvedScript } from './script'
 import type { ResolvedOptions } from '.'
-
-const debug = _debug('vite:hmr')
 
 const directRequestRE = /(\?|&)direct\b/
 
@@ -75,9 +72,9 @@ export async function handleHotUpdate(
   const nextStyles = descriptor.styles || []
 
   // force reload if CSS vars injection changed
-  if (prevDescriptor.cssVars.join('') !== descriptor.cssVars.join('')) {
-    affectedModules.add(mainModule)
-  }
+  // if (prevDescriptor.cssVars.join('') !== descriptor.cssVars.join('')) {
+  //   affectedModules.add(mainModule)
+  // }
 
   // force reload if scoped status has changed
   if (prevStyles.some((s) => s.scoped) !== nextStyles.some((s) => s.scoped)) {
@@ -155,9 +152,6 @@ export async function handleHotUpdate(
   }
   if (didUpdateStyle) {
     updateType.push(`style`)
-  }
-  if (updateType.length) {
-    debug(`[vue:update(${updateType.join('&')})] ${file}`)
   }
   return [...affectedModules].filter(Boolean) as ModuleNode[]
 }

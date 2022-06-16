@@ -1,27 +1,19 @@
-import path from 'path'
-import slash from 'slash'
-import type {
-  CompilerOptions,
-  SFCDescriptor,
-  SFCTemplateCompileOptions,
-  SFCTemplateCompileResults
-} from 'vue/compiler-sfc'
+// @ts-ignore
+import hash from 'hash-sum'
+import type { SFCDescriptor, SFCTemplateCompileOptions } from 'vue/compiler-sfc'
 import type { PluginContext, TransformPluginContext } from 'rollup'
 import { getResolvedScript } from './script'
 import { createRollupError } from './utils/error'
 import type { ResolvedOptions } from '.'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function transformTemplateAsModule(
   code: string,
   descriptor: SFCDescriptor,
   options: ResolvedOptions,
   pluginContext: TransformPluginContext,
   ssr: boolean
-) {
-  const result = compile(code, descriptor, options, pluginContext, ssr)
-
-  let returnCode = result.code
+): Promise<string> {
+  let returnCode = compile(code, descriptor, options, pluginContext, ssr)
   if (
     options.devServer &&
     options.devServer.config.server.hmr !== false &&
@@ -33,10 +25,7 @@ export async function transformTemplateAsModule(
     })`
   }
 
-  return {
-    code: returnCode,
-    map: result.map
-  }
+  return returnCode + `\nexport { render, staticRenderFns }`
 }
 
 /**
@@ -48,25 +37,19 @@ export function transformTemplateInMain(
   options: ResolvedOptions,
   pluginContext: PluginContext,
   ssr: boolean
-): SFCTemplateCompileResults {
-  const result = compile(code, descriptor, options, pluginContext, ssr)
-  return {
-    ...result,
-    code: result.code.replace(
-      /\nexport (function|const) (render|ssrRender)/,
-      '\n$1 _sfc_$2'
-    )
-  }
+): string {
+  return compile(code, descriptor, options, pluginContext, ssr)
+    .replace(/var (render|staticRenderFns) =/, 'var _sfc_$1 =')
+    .replace(/(render._withStripped)/, '_sfc_$1')
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function compile(
   code: string,
   descriptor: SFCDescriptor,
   options: ResolvedOptions,
   pluginContext: PluginContext,
   ssr: boolean
-) {
+): string {
   const filename = descriptor.filename
   const result = options.compiler.compileTemplate({
     ...resolveTemplateCompilerOptions(descriptor, options, ssr)!,
@@ -87,15 +70,15 @@ export function compile(
     result.tips.forEach((tip) =>
       pluginContext.warn({
         id: filename,
-        message: tip
+        message: typeof tip === 'string' ? tip : tip.msg
       })
     )
   }
 
-  return result
+  return transformRequireToImport(code)
 }
 
-export function resolveTemplateCompilerOptions(
+function resolveTemplateCompilerOptions(
   descriptor: SFCDescriptor,
   options: ResolvedOptions,
   ssr: boolean
@@ -106,44 +89,7 @@ export function resolveTemplateCompilerOptions(
   }
   const resolvedScript = getResolvedScript(descriptor, ssr)
   const hasScoped = descriptor.styles.some((s) => s.scoped)
-  const { id, filename, cssVars } = descriptor
-
-  let transformAssetUrls = options.template?.transformAssetUrls
-  // compiler-sfc should export `AssetURLOptions`
-  let assetUrlOptions //: AssetURLOptions | undefined
-  if (options.devServer) {
-    // during dev, inject vite base so that compiler-sfc can transform
-    // relative paths directly to absolute paths without incurring an extra import
-    // request
-    if (filename.startsWith(options.root)) {
-      assetUrlOptions = {
-        base:
-          (options.devServer.config.server?.origin ?? '') +
-          options.devServer.config.base +
-          slash(path.relative(options.root, path.dirname(filename)))
-      }
-    }
-  } else if (transformAssetUrls !== false) {
-    // build: force all asset urls into import requests so that they go through
-    // the assets plugin for asset registration
-    assetUrlOptions = {
-      includeAbsolute: true
-    }
-  }
-
-  if (transformAssetUrls && typeof transformAssetUrls === 'object') {
-    // presence of array fields means this is raw tags config
-    if (Object.values(transformAssetUrls).some((val) => Array.isArray(val))) {
-      transformAssetUrls = {
-        ...assetUrlOptions,
-        tags: transformAssetUrls as any
-      }
-    } else {
-      transformAssetUrls = { ...assetUrlOptions, ...transformAssetUrls }
-    }
-  } else {
-    transformAssetUrls = assetUrlOptions
-  }
+  const { id, filename } = descriptor
 
   let preprocessOptions = block.lang && options.template?.preprocessOptions
   if (block.lang === 'pug') {
@@ -153,33 +99,44 @@ export function resolveTemplateCompilerOptions(
     }
   }
 
-  // if using TS, support TS syntax in template expressions
-  const expressionPlugins: CompilerOptions['expressionPlugins'] =
-    options.template?.compilerOptions?.expressionPlugins || []
-  const lang = descriptor.scriptSetup?.lang || descriptor.script?.lang
-  if (lang && /tsx?$/.test(lang) && !expressionPlugins.includes('typescript')) {
-    expressionPlugins.push('typescript')
-  }
-
   return {
     ...options.template,
-    id,
     filename,
-    scoped: hasScoped,
-    slotted: descriptor.slotted,
-    isProd: options.isProduction,
-    inMap: block.src ? undefined : block.map,
-    ssr,
-    ssrCssVars: cssVars,
-    transformAssetUrls,
+    isProduction: options.isProduction,
+    optimizeSSR: ssr,
+    transformAssetUrls: true,
+    transformAssetUrlsOptions: {
+      ...options.template?.transformAssetUrlsOptions,
+      includeAbsolute: true
+    },
     preprocessLang: block.lang,
     preprocessOptions,
+    bindings: resolvedScript ? resolvedScript.bindings : undefined,
     compilerOptions: {
+      whitespace: 'condense',
+      outputSourceRange: true,
       ...options.template?.compilerOptions,
-      scopeId: hasScoped ? `data-v-${id}` : undefined,
-      bindingMetadata: resolvedScript ? resolvedScript.bindings : undefined,
-      expressionPlugins,
-      sourceMap: options.sourceMap
+      scopeId: hasScoped ? `data-v-${id}` : undefined
     }
   }
+}
+
+function transformRequireToImport(code: string): string {
+  const imports: Record<string, string> = {}
+  let strImports = ''
+
+  code = code.replace(
+    /require\(("(?:[^"\\]|\\.)+"|'(?:[^'\\]|\\.)+')\)/g,
+    (_, name): any => {
+      if (!(name in imports)) {
+        // #81 compat unicode assets name
+        imports[name] = `__$_require_${hash(name)}__`
+        strImports += `import ${imports[name]} from ${name}\n`
+      }
+
+      return imports[name]
+    }
+  )
+
+  return strImports + code
 }
