@@ -1,10 +1,10 @@
-# @vitejs/plugin-vue [![npm](https://img.shields.io/npm/v/@vitejs/plugin-vue.svg)](https://npmjs.com/package/@vitejs/plugin-vue)
+# @vitejs/plugin-vue2 [![npm](https://img.shields.io/npm/v/@vitejs/plugin-vue2.svg)](https://npmjs.com/package/@vitejs/plugin-vue2)
 
-> Note: as of `vue` 3.2.13+ and `@vitejs/plugin-vue` 1.9.0+, `@vue/compiler-sfc` is no longer required as a peer dependency.
+> Note: this plugin only works with Vue@^2.7.0.
 
 ```js
 // vite.config.js
-import vue from '@vitejs/plugin-vue'
+import vue from '@vitejs/plugin-vue2'
 
 export default {
   plugins: [vue()]
@@ -21,29 +21,6 @@ export interface Options {
   ssr?: boolean
   isProduction?: boolean
 
-  /**
-   * Transform Vue SFCs into custom elements (requires vue@^3.2.0)
-   * - `true` -> all `*.vue` imports are converted into custom elements
-   * - `string | RegExp` -> matched files are converted into custom elements
-   *
-   * @default /\.ce\.vue$/
-   */
-  customElement?: boolean | string | RegExp | (string | RegExp)[]
-
-  /**
-   * Enable Vue reactivity transform (experimental, requires vue@^3.2.25).
-   * https://github.com/vuejs/core/tree/master/packages/reactivity-transform
-   *
-   * - `true`: transform will be enabled for all vue,js(x),ts(x) files except
-   *           those inside node_modules
-   * - `string | RegExp`: apply to vue + only matched files (will include
-   *                      node_modules, so specify directories in necessary)
-   * - `false`: disable in all cases
-   *
-   * @default false
-   */
-  reactivityTransform?: boolean | string | RegExp | (string | RegExp)[]
-
   // options to pass on to vue/compiler-sfc
   script?: Partial<SFCScriptCompileOptions>
   template?: Partial<SFCTemplateCompileOptions>
@@ -53,7 +30,7 @@ export interface Options {
 
 ## Asset URL handling
 
-When `@vitejs/plugin-vue` compiles the `<template>` blocks in SFCs, it also converts any encountered asset URLs into ESM imports.
+When `@vitejs/plugin-vue2` compiles the `<template>` blocks in SFCs, it also converts any encountered asset URLs into ESM imports.
 
 For example, the following template snippet:
 
@@ -130,31 +107,6 @@ export default {
   plugins: [vue(), vueI18nPlugin]
 }
 ```
-
-## Using Vue SFCs as Custom Elements
-
-> Requires `vue@^3.2.0` & `@vitejs/plugin-vue@^1.4.0`
-
-Vue 3.2 introduces the `defineCustomElement` method, which works with SFCs. By default, `<style>` tags inside SFCs are extracted and merged into CSS files during build. However when shipping a library of custom elements, it may be desirable to inline the styles as JavaScript strings and inject them into the custom elements' shadow root instead.
-
-Starting in 1.4.0, files ending with `*.ce.vue` will be compiled in "custom elements" mode: its `<style>` tags are compiled into inlined CSS strings and attached to the component as its `styles` property:
-
-```js
-import { defineCustomElement } from 'vue'
-import Example from './Example.ce.vue'
-
-console.log(Example.styles) // ['/* css content */']
-
-// register
-customElements.define('my-example', defineCustomElement(Example))
-```
-
-Note in custom elements mode there is no need to use `<style scoped>` since the CSS is already scoped inside the shadow DOM.
-
-The `customElement` plugin option can be used to configure the behavior:
-
-- `{ customElement: true }` will import all `*.vue` files in custom element mode.
-- Use a string or regex pattern to change how files should be loaded as Custom Elements (this check is applied after `include` and `exclude` matches).
 
 ## License
 
