@@ -16,7 +16,8 @@ import { transformMain } from './main'
 import { handleHotUpdate } from './handleHotUpdate'
 import { transformTemplateAsModule } from './template'
 import { transformStyle } from './style'
-import { EXPORT_HELPER_ID, helperCode } from './helper'
+import { NORMALIZER_ID, normalizerCode } from './utils/componentNormalizer'
+import { HMR_RUNTIME_ID, hmrRuntimeCode } from './utils/hmrRuntime'
 
 export { parseVueRequest } from './utils/query'
 export type { VueQuery } from './utils/query'
@@ -87,8 +88,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
         isProduction: config.isProduction,
         sourceMap: config.command === 'build' ? !!config.build.sourcemap : true,
         cssDevSourcemap: config.css?.devSourcemap ?? false,
-        devToolsEnabled:
-          !!config.define!.__VUE_PROD_DEVTOOLS__ || !config.isProduction
+        devToolsEnabled: !config.isProduction
       }
     },
 
@@ -102,7 +102,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
 
     async resolveId(id) {
       // component export helper
-      if (id === EXPORT_HELPER_ID) {
+      if (id === NORMALIZER_ID || id === HMR_RUNTIME_ID) {
         return id
       }
       // serve sub-part requests (*?vue) as virtual modules
@@ -113,8 +113,11 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
 
     load(id, opt) {
       const ssr = opt?.ssr === true
-      if (id === EXPORT_HELPER_ID) {
-        return helperCode
+      if (id === NORMALIZER_ID) {
+        return normalizerCode
+      }
+      if (id === HMR_RUNTIME_ID) {
+        return hmrRuntimeCode
       }
 
       const { filename, query } = parseVueRequest(id)

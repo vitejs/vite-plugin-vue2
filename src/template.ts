@@ -5,6 +5,9 @@ import type { PluginContext, TransformPluginContext } from 'rollup'
 import { getResolvedScript } from './script'
 import { createRollupError } from './utils/error'
 import type { ResolvedOptions } from '.'
+import path from 'path'
+import slash from 'slash'
+import { HMR_RUNTIME_ID } from './utils/hmrRuntime'
 
 export async function transformTemplateAsModule(
   code: string,
@@ -20,8 +23,9 @@ export async function transformTemplateAsModule(
     !ssr &&
     !options.isProduction
   ) {
-    returnCode += `\nimport.meta.hot.accept(({ render }) => {
-      __VUE_HMR_RUNTIME__.rerender(${JSON.stringify(descriptor.id)}, render)
+    returnCode += `\nimport __VUE_HMR_RUNTIME__ from "${HMR_RUNTIME_ID}"`
+    returnCode += `\nimport.meta.hot.accept((updated) => {
+      __VUE_HMR_RUNTIME__.rerender(${JSON.stringify(descriptor.id)}, updated)
     })`
   }
 
@@ -99,15 +103,38 @@ function resolveTemplateCompilerOptions(
     }
   }
 
+  const transformAssetUrls = options.template?.transformAssetUrls
+  let assetUrlOptions
+  if (options.devServer) {
+    // during dev, inject vite base so that compiler-sfc can transform
+    // relative paths directly to absolute paths without incurring an extra import
+    // request
+    if (filename.startsWith(options.root)) {
+      assetUrlOptions = {
+        base:
+          (options.devServer.config.server?.origin ?? '') +
+          options.devServer.config.base +
+          slash(path.relative(options.root, path.dirname(filename)))
+      }
+    }
+  } else if (transformAssetUrls !== false) {
+    // build: force all asset urls into import requests so that they go through
+    // the assets plugin for asset registration
+    assetUrlOptions = {
+      includeAbsolute: true
+    }
+  }
+
   return {
+    transformAssetUrls,
     ...options.template,
     filename,
     isProduction: options.isProduction,
+    isFunctional: !!block.attrs.functional,
     optimizeSSR: ssr,
-    transformAssetUrls: true,
     transformAssetUrlsOptions: {
       ...options.template?.transformAssetUrlsOptions,
-      includeAbsolute: true
+      ...assetUrlOptions
     },
     preprocessLang: block.lang,
     preprocessOptions,

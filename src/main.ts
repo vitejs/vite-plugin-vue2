@@ -12,8 +12,9 @@ import { resolveScript } from './script'
 import { transformTemplateInMain } from './template'
 import { isOnlyTemplateChanged } from './handleHotUpdate'
 import { createRollupError } from './utils/error'
-import { EXPORT_HELPER_ID } from './helper'
 import type { ResolvedOptions } from '.'
+import { NORMALIZER_ID } from './utils/componentNormalizer'
+import { HMR_RUNTIME_ID } from './utils/hmrRuntime'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function transformMain(
@@ -38,8 +39,10 @@ export async function transformMain(
   }
 
   // feature information
-  const attachedProps: [string, string][] = []
   const hasScoped = descriptor.styles.some((s) => s.scoped)
+  const hasCssModules = descriptor.styles.some((s) => s.module)
+  const hasFunctional =
+    descriptor.template && descriptor.template.attrs.functional
 
   // script
   const { code: scriptCode, map: scriptMap } = await genScriptCode(
@@ -57,17 +60,8 @@ export async function transformMain(
     ssr
   )
 
-  attachedProps.push(
-    ssr ? ['ssrRender', '_sfc_ssrRender'] : ['render', '_sfc_render']
-  )
-
   // styles
-  const stylesCode = await genStyleCode(
-    descriptor,
-    pluginContext,
-    // asCustomElement,
-    attachedProps
-  )
+  const stylesCode = await genStyleCode(descriptor, pluginContext)
 
   // custom blocks
   const customBlocksCode = await genCustomBlockCode(descriptor, pluginContext)
@@ -78,15 +72,29 @@ export async function transformMain(
     stylesCode,
     customBlocksCode
   ]
-  if (hasScoped) {
-    attachedProps.push([`__scopeId`, JSON.stringify(`data-v-${descriptor.id}`)])
-  }
+
+  output.push(
+    `/* normalize component */
+import __normalizer from "${NORMALIZER_ID}"
+var __component__ = /*#__PURE__*/__normalizer(
+  _sfc_main,
+  _sfc_render,
+  _sfc_staticRenderFns,
+  ${hasFunctional ? 'true' : 'false'},
+  ${hasCssModules ? `_sfc_injectStyles` : `null`},
+  ${hasScoped ? JSON.stringify(descriptor.id) : 'null'},
+  null,
+  null
+)`
+  )
+
   if (devToolsEnabled || (devServer && !isProduction)) {
     // expose filename during serve for devtools to pickup
-    attachedProps.push([
-      `__file`,
-      JSON.stringify(isProduction ? path.basename(filename) : filename)
-    ])
+    output.push(
+      `__component__.options.__file = ${JSON.stringify(
+        isProduction ? path.basename(filename) : filename
+      )}`
+    )
   }
 
   // HMR
@@ -96,21 +104,26 @@ export async function transformMain(
     !ssr &&
     !isProduction
   ) {
-    output.push(`_sfc_main.__hmrId = ${JSON.stringify(descriptor.id)}`)
+    const id = JSON.stringify(descriptor.id)
     output.push(
-      `typeof __VUE_HMR_RUNTIME__ !== 'undefined' && ` +
-        `__VUE_HMR_RUNTIME__.createRecord(_sfc_main.__hmrId, _sfc_main)`
+      `import __VUE_HMR_RUNTIME__ from "${HMR_RUNTIME_ID}"`,
+      `if (!__VUE_HMR_RUNTIME__.isRecorded(${id})) {`,
+      `  __VUE_HMR_RUNTIME__.createRecord(${id}, __component__.options)`,
+      `}`
     )
     // check if the template is the only thing that changed
-    if (prevDescriptor && isOnlyTemplateChanged(prevDescriptor, descriptor)) {
+    if (
+      hasFunctional ||
+      (prevDescriptor && isOnlyTemplateChanged(prevDescriptor, descriptor))
+    ) {
       output.push(`export const _rerender_only = true`)
     }
     output.push(
       `import.meta.hot.accept(({ default: updated, _rerender_only }) => {`,
       `  if (_rerender_only) {`,
-      `    __VUE_HMR_RUNTIME__.rerender(updated.__hmrId, updated.render)`,
+      `    __VUE_HMR_RUNTIME__.rerender(${id}, updated)`,
       `  } else {`,
-      `    __VUE_HMR_RUNTIME__.reload(updated.__hmrId, updated)`,
+      `    __VUE_HMR_RUNTIME__.reload(${id}, updated)`,
       `  }`,
       `})`
     )
@@ -123,16 +136,7 @@ export async function transformMain(
 
   let resolvedMap: RawSourceMap | undefined = scriptMap
 
-  if (!attachedProps.length) {
-    output.push(`export default _sfc_main`)
-  } else {
-    output.push(
-      `import _export_sfc from '${EXPORT_HELPER_ID}'`,
-      `export default /*#__PURE__*/_export_sfc(_sfc_main, [${attachedProps
-        .map(([key, val]) => `['${key}',${val}]`)
-        .join(',')}])`
-    )
-  }
+  output.push(`export default __component__.exports`)
 
   // handle TS transpilation
   let resolvedCode = output.join('\n')
@@ -256,9 +260,7 @@ async function genScriptCode(
 
 async function genStyleCode(
   descriptor: SFCDescriptor,
-  pluginContext: PluginContext,
-  // asCustomElement: boolean,
-  attachedProps: [string, string][]
+  pluginContext: PluginContext
 ) {
   let stylesCode = ``
   let cssModulesMap: Record<string, string> | undefined
@@ -306,8 +308,12 @@ async function genStyleCode(
         (code, [key, value]) => code + `"${key}":${value},\n`,
         '{\n'
       ) + '}'
-    stylesCode += `\nconst cssModules = ${mappingCode}`
-    attachedProps.push([`__cssModules`, `cssModules`])
+    stylesCode += `\nconst __cssModules = ${mappingCode}`
+    stylesCode += `\nfunction _sfc_injectStyles(ctx) {
+      for (var key in __cssModules) {
+        this[key] = __cssModules[key]
+      }
+    }`
   }
   return stylesCode
 }
