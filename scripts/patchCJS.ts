@@ -41,17 +41,15 @@ if (matchMixed) {
   writeFileSync(indexPath, lines.join('\n'))
 
   console.log(colors.bold(`${indexPath} CJS patched`))
-  process.exit()
+} else {
+  const matchDefault = code.match(/\nmodule.exports = (\w+);/)
+
+  if (matchDefault) {
+    code += `module.exports["default"] = ${matchDefault[1]};\n`
+    writeFileSync(indexPath, code)
+    console.log(colors.bold(`${indexPath} CJS patched`))
+  } else {
+    console.error(colors.red(`${indexPath} CJS patch failed`))
+    process.exit(1)
+  }
 }
-
-const matchDefault = code.match(/\nmodule.exports = (\w+);/)
-
-if (matchDefault) {
-  code += `module.exports["default"] = ${matchDefault[1]};\n`
-  writeFileSync(indexPath, code)
-  console.log(colors.bold(`${indexPath} CJS patched`))
-  process.exit()
-}
-
-console.error(colors.red(`${indexPath} CJS patch failed`))
-process.exit(1)

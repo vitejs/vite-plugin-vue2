@@ -18,8 +18,7 @@
   },
   "scripts": {
     "dev": "unbuild --stub",
-    "build": "unbuild && pnpm run patch-cjs",
-    "patch-cjs": "esno ../../scripts/patchCJS.ts",
+    "build": "unbuild && esno scripts/patchCJS.ts",
     "prepublishOnly": "npm run build"
   },
   "engines": {
@@ -27,24 +26,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vitejs/vite.git",
+    "url": "git+https://github.com/vitejs/vite-plugin-vue2.git",
     "directory": "packages/plugin-vue"
   },
   "bugs": {
-    "url": "https://github.com/vitejs/vite/issues"
+    "url": "https://github.com/vitejs/vite-plugin-vue2/issues"
   },
-  "homepage": "https://github.com/vitejs/vite/tree/main/packages/plugin-vue#readme",
+  "homepage": "https://github.com/vitejs/vite-plugin-vue2/#readme",
   "peerDependencies": {
     "vite": ">=2.5.10",
-    "vue": "^2.7.0-alpha"
+    "vue": "^2.7.0-0"
   },
   "devDependencies": {
-    "@jridgewell/gen-mapping": "^0.3.1",
-    "@jridgewell/trace-mapping": "^0.3.13",
     "@rollup/pluginutils": "^4.2.1",
     "debug": "^4.3.4",
     "esno": "^0.16.3",
     "hash-sum": "^2.0.0",
+    "picocolors": "^1.0.0",
     "rollup": "^2.75.6",
     "slash": "^4.0.0",
     "source-map": "^0.6.1",
