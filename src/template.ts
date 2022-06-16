@@ -43,7 +43,7 @@ export function transformTemplateInMain(
   ssr: boolean
 ): string {
   return compile(code, descriptor, options, pluginContext, ssr)
-    .replace(/var (render|staticRenderFns) =/, 'var _sfc_$1 =')
+    .replace(/var (render|staticRenderFns) =/g, 'var _sfc_$1 =')
     .replace(/(render._withStripped)/, '_sfc_$1')
 }
 
@@ -79,7 +79,7 @@ export function compile(
     )
   }
 
-  return transformRequireToImport(code)
+  return transformRequireToImport(result.code)
 }
 
 function resolveTemplateCompilerOptions(
@@ -103,7 +103,7 @@ function resolveTemplateCompilerOptions(
     }
   }
 
-  const transformAssetUrls = options.template?.transformAssetUrls
+  const transformAssetUrls = options.template?.transformAssetUrls ?? true
   let assetUrlOptions
   if (options.devServer) {
     // during dev, inject vite base so that compiler-sfc can transform

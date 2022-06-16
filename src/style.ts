@@ -4,7 +4,6 @@ import type { RawSourceMap } from 'source-map'
 import { formatPostcssSourceMap } from 'vite'
 import type { ResolvedOptions } from '.'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function transformStyle(
   code: string,
   descriptor: SFCDescriptor,
@@ -22,7 +21,7 @@ export async function transformStyle(
     id: `data-v-${descriptor.id}`,
     // isProd: options.isProduction,
     source: code,
-    scoped: block.scoped,
+    scoped: !!block.scoped,
     ...(options.cssDevSourcemap
       ? {
           postcssOptions: {
