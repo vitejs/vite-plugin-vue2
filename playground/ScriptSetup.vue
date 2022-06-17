@@ -18,6 +18,6 @@ const vRed = {
   <div v-red class="script-setup">
     This should be red.
     <span class="prop">{{ msg }}</span>
-    <button @click="count++">Count: {{ count }}</button>
+    <button @click="count++">{{ count }}</button>
   </div>
 </template>

@@ -19,6 +19,7 @@
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild && esno scripts/patchCJS.ts",
+    "test": "vitest run",
     "release": "node scripts/release.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
@@ -45,10 +46,12 @@
     "enquirer": "^2.3.6",
     "esno": "^0.16.3",
     "execa": "^4.1.0",
+    "fs-extra": "^10.1.0",
     "hash-sum": "^2.0.0",
     "minimist": "^1.2.6",
     "picocolors": "^1.0.0",
     "prettier": "^2.7.1",
+    "puppeteer": "^14.4.0",
     "rollup": "^2.75.6",
     "semver": "^7.3.7",
     "slash": "^3.0.0",
@@ -56,6 +59,6 @@
     "unbuild": "^0.7.4",
     "vite": "^2.9.12",
     "vitest": "^0.15.1",
-    "vue": "^2.7.0-beta.1"
+    "vue": "^2.7.0-beta.2"
   }
 }

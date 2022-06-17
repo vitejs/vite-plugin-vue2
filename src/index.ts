@@ -72,7 +72,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
   }
 
   return {
-    name: 'vite:vue',
+    name: 'vite:vue2',
 
     handleHotUpdate(ctx) {
       if (!filter(ctx.file)) {
@@ -147,7 +147,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
       }
     },
 
-    transform(code, id, opt) {
+    async transform(code, id, opt) {
       const ssr = opt?.ssr === true
       const { filename, query } = parseVueRequest(id)
       if (query.raw) {
@@ -177,7 +177,18 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
           : getDescriptor(filename, options)!
 
         if (query.type === 'template') {
-          return transformTemplateAsModule(code, descriptor, options, this, ssr)
+          return {
+            code: await transformTemplateAsModule(
+              code,
+              descriptor,
+              options,
+              this,
+              ssr
+            ),
+            map: {
+              mappings: ''
+            }
+          }
         } else if (query.type === 'style') {
           return transformStyle(
             code,
