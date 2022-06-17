@@ -139,6 +139,7 @@ function resolveTemplateCompilerOptions(
     preprocessLang: block.lang,
     preprocessOptions,
     bindings: resolvedScript ? resolvedScript.bindings : undefined,
+    prettify: false,
     compilerOptions: {
       whitespace: 'condense',
       outputSourceRange: true,
