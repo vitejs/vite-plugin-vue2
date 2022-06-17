@@ -77,6 +77,9 @@ async function main() {
     console.log(`(skipped)`)
   }
 
+  // update package version
+  updatePackage(targetVersion)
+
   // build all packages with types
   step('\nBuilding for production...')
   if (!skipBuild && !isDryRun) {
@@ -116,6 +119,14 @@ async function main() {
     console.log(`\nDry run finished - run git diff to see package changes.`)
   }
   console.log()
+}
+
+function updatePackage(version) {
+  const pkgRoot = path.resolve(__dirname, '../')
+  const pkgPath = path.resolve(pkgRoot, 'package.json')
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'))
+  pkg.version = version
+  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
 }
 
 async function publishPackage(version, runIfNotDry) {
@@ -165,4 +176,7 @@ async function publishPackage(version, runIfNotDry) {
   }
 }
 
-main()
+main().catch(err => {
+  updatePackage(currentVersion)
+  console.error(err)
+})
