@@ -18,7 +18,9 @@
   },
   "scripts": {
     "dev": "unbuild --stub",
-    "build": "unbuild && esno scripts/patchCJS.ts"
+    "build": "unbuild && esno scripts/patchCJS.ts",
+    "release": "node scripts/release.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "engines": {
     "node": ">=14.6.0"

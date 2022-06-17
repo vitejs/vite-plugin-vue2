@@ -13,10 +13,6 @@ const preId =
 const isDryRun = args.dry
 const skipTests = args.skipTests
 const skipBuild = args.skipBuild
-const packages = fs
-  .readdirSync(path.resolve(__dirname, '../packages'))
-  .filter(p => !p.endsWith('.ts') && !p.startsWith('.'))
-  .concat('vue')
 
 const versionIncrements = [
   'patch',
@@ -81,17 +77,10 @@ async function main() {
     console.log(`(skipped)`)
   }
 
-  // update all package versions and inter-dependencies
-  step('\nUpdating package versions...')
-  packages.forEach(p => updatePackage(getPkgRoot(p), targetVersion))
-
   // build all packages with types
-  step('\nBuilding all packages...')
+  step('\nBuilding for production...')
   if (!skipBuild && !isDryRun) {
     await run('pnpm', ['run', 'build'])
-    if (skipTests) {
-      await run('pnpm', ['run', 'build:types'])
-    }
   } else {
     console.log(`(skipped)`)
   }
@@ -114,10 +103,8 @@ async function main() {
   }
 
   // publish packages
-  step('\nPublishing packages...')
-  for (const pkg of packages) {
-    await publishPackage(pkg, targetVersion, runIfNotDry)
-  }
+  step('\nPublishing...')
+  await publishPackage(targetVersion, runIfNotDry)
 
   // push to GitHub
   step('\nPushing to GitHub...')
@@ -131,20 +118,8 @@ async function main() {
   console.log()
 }
 
-function updatePackage(pkgRoot, version) {
-  const pkgPath = path.resolve(pkgRoot, 'package.json')
-  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'))
-  pkg.version = version
-  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
-}
-
-const getPkgRoot = pkg =>
-  pkg === 'vue'
-    ? path.resolve(__dirname, '../')
-    : path.resolve(__dirname, '../packages/' + pkg)
-
-async function publishPackage(pkgName, version, runIfNotDry) {
-  const pkgRoot = getPkgRoot(pkgName)
+async function publishPackage(version, runIfNotDry) {
+  const pkgRoot = path.resolve(__dirname, '../')
   const pkgPath = path.resolve(pkgRoot, 'package.json')
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'))
   const publishedName = pkg.name
@@ -161,15 +136,6 @@ async function publishPackage(pkgName, version, runIfNotDry) {
     releaseTag = 'beta'
   } else if (version.includes('rc')) {
     releaseTag = 'rc'
-  }
-
-  // avoid overwriting tags for v3
-  if (pkgName === 'vue' || pkgName === 'compiler-sfc') {
-    if (releaseTag) {
-      releaseTag = `v2-${releaseTag}`
-    } else {
-      releaseTag = 'v2'
-    }
   }
 
   step(`Publishing ${publishedName}...`)
