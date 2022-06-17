@@ -44,8 +44,10 @@ Is the same as:
 <script setup>
 import _imports_0 from '../image.png'
 </script>
+```
 
-<img src="_imports_0" />
+```vue
+<img :src="_imports_0" />
 ```
 
 By default the following tag/attribute combinations are transformed, and can be configured using the `template.transformAssetUrls` option.
