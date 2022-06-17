@@ -18,8 +18,7 @@
   },
   "scripts": {
     "dev": "unbuild --stub",
-    "build": "unbuild && esno scripts/patchCJS.ts",
-    "prepublishOnly": "npm run build"
+    "build": "unbuild && esno scripts/patchCJS.ts"
   },
   "engines": {
     "node": ">=14.6.0"
@@ -39,15 +38,22 @@
   },
   "devDependencies": {
     "@rollup/pluginutils": "^4.2.1",
+    "conventional-changelog-cli": "^2.2.2",
     "debug": "^4.3.4",
+    "enquirer": "^2.3.6",
     "esno": "^0.16.3",
+    "execa": "^4.1.0",
     "hash-sum": "^2.0.0",
+    "minimist": "^1.2.6",
     "picocolors": "^1.0.0",
+    "prettier": "^2.7.1",
     "rollup": "^2.75.6",
-    "slash": "^4.0.0",
+    "semver": "^7.3.7",
+    "slash": "^3.0.0",
     "source-map": "^0.6.1",
     "unbuild": "^0.7.4",
     "vite": "^2.9.12",
-    "vue": "^2.7.0-alpha.12"
+    "vitest": "^0.15.1",
+    "vue": "^2.7.0-beta.1"
   }
 }

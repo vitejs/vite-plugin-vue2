@@ -206,8 +206,7 @@ async function genTemplateCode(
     const attrsQuery = attrsToQuery(template.attrs, 'js', true)
     const query = `?vue&type=template${srcQuery}${scopedQuery}${attrsQuery}`
     const request = JSON.stringify(src + query)
-    const renderFnName = ssr ? 'ssrRender' : 'render'
-    return `import { ${renderFnName} as _sfc_${renderFnName} } from ${request}`
+    return `import { render as _sfc_render, staticRenderFns as _sfc_staticRenderFns } from ${request}`
   }
 }
 
