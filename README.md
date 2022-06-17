@@ -67,7 +67,7 @@ Note that only attribute values that are static strings are transformed. Otherwi
 ## Example for passing options to `vue/compiler-sfc`:
 
 ```ts
-import vue from '@vitejs/plugin-vue'
+import vue from '@vitejs/plugin-vue2'
 
 export default {
   plugins: [
@@ -88,7 +88,7 @@ export default {
 ## Example for transforming custom blocks
 
 ```ts
-import vue from '@vitejs/plugin-vue'
+import vue from '@vitejs/plugin-vue2'
 
 const vueI18nPlugin = {
   name: 'vue-i18n',
