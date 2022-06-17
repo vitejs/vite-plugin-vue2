@@ -46,7 +46,7 @@ import _imports_0 from '../image.png'
 </script>
 <template>
   <img :src="_imports_0" />
- </template>
+</template>
 ```
 
 By default the following tag/attribute combinations are transformed, and can be configured using the `template.transformAssetUrls` option.
