@@ -139,4 +139,13 @@ export function declareTests(isBuild: boolean) {
       // )
     }
   })
+
+  test('SFC Recursive Component', async () => {
+    expect(await getText('.test-recursive-item')).toMatch(/name-1-1-1/)
+  })
+
+  test('SFC Async Component', async () => {
+    expect(await getText('.async-component-a')).toMatch('This is componentA')
+    expect(await getText('.async-component-b')).toMatch('This is componentB')
+  })
 }
