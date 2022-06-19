@@ -174,6 +174,9 @@ async function genTemplateCode(
   ssr: boolean
 ) {
   const template = descriptor.template!
+
+  if (!template) return ''
+
   const hasScoped = descriptor.styles.some((style) => style.scoped)
 
   // If the template is not using pre-processor AND is not using external src,
