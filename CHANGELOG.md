@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/vitejs/vite-plugin-vue2/compare/v1.0.1...v1.1.0) (2022-06-20)
+
+
+### Features
+
+* support css v-bind ([5146fd8](https://github.com/vitejs/vite-plugin-vue2/commit/5146fd8d2b852c8aed07d081811e7b81894211eb))
+
+
+
 ## 1.0.1 (2022-06-17)
 
 
