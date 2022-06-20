@@ -9,6 +9,7 @@ import TestCustomBlock from './custom/TestCustomBlock.vue'
 import TestHmr from './hmr/TestHmr.vue'
 import TestAssets from './test-assets/TestAssets.vue'
 import TestES2020Features from './TestES2020Features.vue'
+import TestCssVBind from './css/TestCssVBind.vue'
 </script>
 
 <template>
@@ -24,5 +25,6 @@ import TestES2020Features from './TestES2020Features.vue'
     <TestHmr />
     <TestAssets />
     <TestES2020Features />
+    <TestCssVBind/>
   </div>
 </template>

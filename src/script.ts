@@ -39,6 +39,7 @@ export function resolveScript(
 
   resolved = options.compiler.compileScript(descriptor, {
     ...options.script,
+    id: descriptor.id,
     isProd: options.isProduction,
     sourceMap: options.sourceMap
   })
