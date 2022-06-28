@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/vitejs/vite-plugin-vue2/compare/v1.1.0...v1.1.1) (2022-06-28)
+
+
+### Bug Fixes
+
+* handle no template code in .vue file ([#11](https://github.com/vitejs/vite-plugin-vue2/issues/11)) ([42b0851](https://github.com/vitejs/vite-plugin-vue2/commit/42b0851425e39d5e7138114f1cc3d431cadc52ab)), closes [#15](https://github.com/vitejs/vite-plugin-vue2/issues/15)
+
+
+
 # [1.1.0](https://github.com/vitejs/vite-plugin-vue2/compare/v1.0.1...v1.1.0) (2022-06-20)
 
 
