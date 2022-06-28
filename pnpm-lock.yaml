@@ -5,6 +5,7 @@ importers:
   .:
     specifiers:
       '@rollup/pluginutils': ^4.2.1
+      '@types/fs-extra': ^9.0.13
       conventional-changelog-cli: ^2.2.2
       debug: ^4.3.4
       enquirer: ^2.3.6
@@ -26,6 +27,7 @@ importers:
       vue: ^2.7.0-beta.3
     devDependencies:
       '@rollup/pluginutils': 4.2.1
+      '@types/fs-extra': 9.0.13
       conventional-changelog-cli: 2.2.2
       debug: 4.3.4
       enquirer: 2.3.6
@@ -432,6 +434,12 @@ packages:
 
   /@types/estree/0.0.51:
     resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
+    dev: true
+
+  /@types/fs-extra/9.0.13:
+    resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
+    dependencies:
+      '@types/node': 18.0.0
     dev: true
 
   /@types/minimist/1.2.2:
