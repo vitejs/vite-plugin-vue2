@@ -1,6 +1,6 @@
 {
   "name": "@vitejs/plugin-vue2",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "MIT",
   "author": "Evan You",
   "files": [
@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@rollup/pluginutils": "^4.2.1",
+    "@types/fs-extra": "^9.0.13",
     "conventional-changelog-cli": "^2.2.2",
     "debug": "^4.3.4",
     "enquirer": "^2.3.6",
@@ -59,6 +60,6 @@
     "unbuild": "^0.7.4",
     "vite": "^2.9.12",
     "vitest": "^0.15.1",
-    "vue": "^2.7.0-beta.2"
+    "vue": "^2.7.0-beta.3"
   }
 }

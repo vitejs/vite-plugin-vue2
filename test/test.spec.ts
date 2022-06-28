@@ -148,4 +148,11 @@ export function declareTests(isBuild: boolean) {
     expect(await getText('.async-component-a')).toMatch('This is componentA')
     expect(await getText('.async-component-b')).toMatch('This is componentB')
   })
+
+  test('css v-bind', async () => {
+    const el = await getEl('.css-v-bind')
+    expect(await getComputedColor(el!)).toBe(`rgb(255, 0, 0)`)
+    await el!.click()
+    expect(await getComputedColor(el!)).toBe(`rgb(0, 128, 0)`)
+  })
 }

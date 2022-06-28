@@ -5,6 +5,7 @@ importers:
   .:
     specifiers:
       '@rollup/pluginutils': ^4.2.1
+      '@types/fs-extra': ^9.0.13
       conventional-changelog-cli: ^2.2.2
       debug: ^4.3.4
       enquirer: ^2.3.6
@@ -23,9 +24,10 @@ importers:
       unbuild: ^0.7.4
       vite: ^2.9.12
       vitest: ^0.15.1
-      vue: ^2.7.0-beta.2
+      vue: ^2.7.0-beta.3
     devDependencies:
       '@rollup/pluginutils': 4.2.1
+      '@types/fs-extra': 9.0.13
       conventional-changelog-cli: 2.2.2
       debug: 4.3.4
       enquirer: 2.3.6
@@ -44,7 +46,7 @@ importers:
       unbuild: 0.7.4
       vite: 2.9.12
       vitest: 0.15.1
-      vue: 2.7.0-beta.2
+      vue: 2.7.0-beta.3
 
   playground:
     specifiers: {}
@@ -434,6 +436,12 @@ packages:
     resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
     dev: true
 
+  /@types/fs-extra/9.0.13:
+    resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
+    dependencies:
+      '@types/node': 18.0.0
+    dev: true
+
   /@types/minimist/1.2.2:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
@@ -460,8 +468,8 @@ packages:
     dev: true
     optional: true
 
-  /@vue/compiler-sfc/2.7.0-beta.2:
-    resolution: {integrity: sha512-uPXBAwziEaHE1sQfWQuxzIyA84qYFABOmsTFLxG5PVc2b0pDmbSjIXzqqaCRImcaWkCoMgq/vwK0mOYPl4NmAQ==}
+  /@vue/compiler-sfc/2.7.0-beta.3:
+    resolution: {integrity: sha512-oO+UwaL1LpxellKkiKcm3BfwQimJqKX4ozxurCKWZWqoCXCCSTdQJriOGFozk1h95U9pWvCa0rl/U4RlWprupw==}
     dependencies:
       '@babel/parser': 7.18.5
       postcss: 8.4.14
@@ -3073,10 +3081,10 @@ packages:
       - supports-color
     dev: true
 
-  /vue/2.7.0-beta.2:
-    resolution: {integrity: sha512-l57WuTovMrHnzUcOsoUNVdE5CcDT+54LMqy+eJSAjJzHgu9EXvU66mboQxUKq2ew2SpF6rCtGx6aU91AjA1AOQ==}
+  /vue/2.7.0-beta.3:
+    resolution: {integrity: sha512-q9a9RQ13HRws/GjUVUWMEBcKy3V96Z+szlHNsnsHSwNjBNh1gY+R68HA8FYinlWIcJxcOQEiIt23FamaXOmMwQ==}
     dependencies:
-      '@vue/compiler-sfc': 2.7.0-beta.2
+      '@vue/compiler-sfc': 2.7.0-beta.3
       csstype: 3.1.0
     dev: true
 

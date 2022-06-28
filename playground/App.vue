@@ -10,6 +10,7 @@ import TestHmr from './hmr/TestHmr.vue'
 import TestAssets from './test-assets/TestAssets.vue'
 import TestES2020Features from './TestES2020Features.vue'
 import TestComponent from './test-component/TestComponent.vue'
+import TestCssVBind from './css/TestCssVBind.vue'
 </script>
 
 <template>
@@ -26,5 +27,6 @@ import TestComponent from './test-component/TestComponent.vue'
     <TestAssets />
     <TestES2020Features />
     <TestComponent />
+    <TestCssVBind/>
   </div>
 </template>

@@ -19,7 +19,7 @@ export async function transformStyle(
     ...options.style,
     filename: descriptor.filename,
     id: `data-v-${descriptor.id}`,
-    // isProd: options.isProduction,
+    isProd: options.isProduction,
     source: code,
     scoped: !!block.scoped,
     ...(options.cssDevSourcemap
