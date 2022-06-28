@@ -173,7 +173,12 @@ async function genTemplateCode(
   pluginContext: PluginContext,
   ssr: boolean
 ) {
-  const template = descriptor.template!
+  const template = descriptor.template
+
+  if (!template) {
+    return 'const _sfc_render = null; const _sfc_staticRenderFns = null'
+  }
+
   const hasScoped = descriptor.styles.some((style) => style.scoped)
 
   // If the template is not using pre-processor AND is not using external src,
