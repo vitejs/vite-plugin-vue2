@@ -22,7 +22,7 @@ export default {
     </p>
     <p>
       Alias asset reference in template:
-      <img src="/@/test-assets/nested/testAssets.png" style="width: 30px;">
+      <img src="@/test-assets/nested/testAssets.png" style="width: 30px;">
     </p>
     <p>
       Absolute asset reference in template:

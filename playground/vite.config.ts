@@ -4,7 +4,7 @@ import vue from '../src/index'
 const config = defineConfig({
   resolve: {
     alias: {
-      '/@': __dirname
+      '@': __dirname
     }
   },
   build: {
