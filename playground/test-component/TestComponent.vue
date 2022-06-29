@@ -3,11 +3,11 @@ import TestRecursive from './recursive/TestRecursive.vue'
 import TestAsyncComponent from './async/TestAsyncComponent.vue'
 
 export default {
-    name: 'TestRecursion',
-    components: {
-        TestRecursive,
-        TestAsyncComponent
-    }
+  name: 'TestRecursion',
+  components: {
+    TestRecursive,
+    TestAsyncComponent
+  }
 }
 </script>
 

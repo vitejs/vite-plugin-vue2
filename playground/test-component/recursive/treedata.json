@@ -1,15 +1,15 @@
 [
-    {
-        "label": "name-1",
+  {
+    "label": "name-1",
+    "children": [
+      {
+        "label": "name-1-1",
         "children": [
-            {
-                "label": "name-1-1",
-                "children": [
-                    {
-                        "label": "name-1-1-1"
-                    }
-                ]
-            }
+          {
+            "label": "name-1-1-1"
+          }
         ]
-    }
+      }
+    ]
+  }
 ]
