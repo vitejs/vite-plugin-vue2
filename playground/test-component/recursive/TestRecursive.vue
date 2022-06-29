@@ -3,15 +3,15 @@ import TestRecursiveTree from './TestRecursiveTree.vue'
 import treedata from './treedata.json'
 
 export default {
-    name: 'TestRecursion',
-    components: {
-        TestRecursiveTree
-    },
-    data() {
-      return {
-        treedata: treedata
-      }
+  name: 'TestRecursion',
+  components: {
+    TestRecursiveTree
+  },
+  data() {
+    return {
+      treedata: treedata
     }
+  }
 }
 </script>
 

@@ -1,29 +1,29 @@
 <script>
 export default {
-    components: {
-        componentA: () =>import('./componentA.vue')
-    },
-    beforeCreate() {
-        this.$options.components.componentB = () =>import('./componentB.vue')
-    }
+  components: {
+    componentA: () => import('./componentA.vue')
+  },
+  beforeCreate() {
+    this.$options.components.componentB = () => import('./componentB.vue')
+  }
 }
 </script>
 
 <template>
-    <div>
-        <h3>Async Component</h3>
-        <componentA />
-        <componentB />
+  <div>
+    <h3>Async Component</h3>
+    <componentA />
+    <componentB />
 
-        <pre>
+    <pre>
 export default {
-    components: {
-        componentA: () =>import('./componentA.vue')
-    },
-    beforeCreate() {
-        this.$options.components.componentB = () =>import('./componentB.vue')
-    }
+  components: {
+    componentA: () => import('./componentA.vue')
+  },
+  beforeCreate() {
+    this.$options.components.componentB = () => import('./componentB.vue')
+  }
 }
-        </pre>
-    </div>
+    </pre>
+  </div>
 </template>
