@@ -31,15 +31,15 @@ export async function transformMain(
   const { descriptor, errors } = createDescriptor(filename, code, options)
 
   if (errors.length) {
-    errors.forEach((error) =>
+    errors.forEach(error =>
       pluginContext.error(createRollupError(filename, error))
     )
     return null
   }
 
   // feature information
-  const hasScoped = descriptor.styles.some((s) => s.scoped)
-  const hasCssModules = descriptor.styles.some((s) => s.module)
+  const hasScoped = descriptor.styles.some(s => s.scoped)
+  const hasCssModules = descriptor.styles.some(s => s.module)
   const hasFunctional =
     descriptor.template && descriptor.template.attrs.functional
 
@@ -179,7 +179,7 @@ async function genTemplateCode(
     return 'const _sfc_render = null; const _sfc_staticRenderFns = null'
   }
 
-  const hasScoped = descriptor.styles.some((style) => style.scoped)
+  const hasScoped = descriptor.styles.some(style => style.scoped)
 
   // If the template is not using pre-processor AND is not using external src,
   // compile and inline it directly in the main module. When served in vite this
@@ -235,10 +235,17 @@ async function genScriptCode(
       (!script.lang || (script.lang === 'ts' && options.devServer)) &&
       !script.src
     ) {
+      const userPlugins = options.script?.babelParserPlugins || []
+      const defaultPlugins =
+        script.lang === 'ts'
+          ? userPlugins.includes('decorators')
+            ? (['typescript'] as const)
+            : (['typescript', 'decorators-legacy'] as const)
+          : []
       scriptCode = options.compiler.rewriteDefault(
         script.content,
         '_sfc_main',
-        script.lang === 'ts' ? ['typescript'] : undefined
+        [...defaultPlugins, ...userPlugins]
       )
       map = script.map
     } else {
