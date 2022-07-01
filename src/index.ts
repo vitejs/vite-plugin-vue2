@@ -90,6 +90,12 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
         cssDevSourcemap: config.css?.devSourcemap ?? false,
         devToolsEnabled: !config.isProduction
       }
+      if (!config.resolve.alias.some(({ find }) => find === 'vue')) {
+        config.resolve.alias.push({
+          find: 'vue',
+          replacement: 'vue/dist/vue.runtime.esm.js'
+        })
+      }
     },
 
     configureServer(server) {
