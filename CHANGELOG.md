@@ -1,3 +1,13 @@
+## [1.1.2](https://github.com/vitejs/vite-plugin-vue2/compare/v1.1.1...v1.1.2) (2022-07-01)
+
+
+### Bug Fixes
+
+* force resolution of vue to deal with deps requiring vue ([9a78726](https://github.com/vitejs/vite-plugin-vue2/commit/9a78726d77ef9aadf3c07dacd4c27828fe8f4ac8)), closes [#16](https://github.com/vitejs/vite-plugin-vue2/issues/16)
+* handle decorators in ts rewriteDefault fallback ([2d24d2a](https://github.com/vitejs/vite-plugin-vue2/commit/2d24d2a4a692e59b789efc9b34119cc3650bf89e)), closes [#17](https://github.com/vitejs/vite-plugin-vue2/issues/17)
+
+
+
 ## [1.1.1](https://github.com/vitejs/vite-plugin-vue2/compare/v1.1.0...v1.1.1) (2022-06-28)
 
 
