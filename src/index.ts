@@ -34,8 +34,8 @@ export interface Options {
   style?: Partial<SFCStyleCompileOptions>
 
   // customElement?: boolean | string | RegExp | (string | RegExp)[]
-  // reactivityTransform?: boolean | string | RegExp | (string | RegExp)[]
-  // compiler?: typeof _compiler
+  reactivityTransform?: boolean | string | RegExp | (string | RegExp)[]
+  compiler?: typeof _compiler
 }
 
 export interface ResolvedOptions extends Options {
@@ -50,9 +50,9 @@ export interface ResolvedOptions extends Options {
 export default function vuePlugin(rawOptions: Options = {}): Plugin {
   const {
     include = /\.vue$/,
-    exclude
+    exclude,
     // customElement = /\.ce\.vue$/,
-    // reactivityTransform = false
+    reactivityTransform = false
   } = rawOptions
 
   const filter = createFilter(include, exclude)
@@ -64,12 +64,19 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     include,
     exclude,
     // customElement,
-    // reactivityTransform,
+    reactivityTransform,
     root: process.cwd(),
     sourceMap: true,
     cssDevSourcemap: false,
     devToolsEnabled: process.env.NODE_ENV !== 'production'
   }
+
+  const refTransformFilter =
+    reactivityTransform === false
+      ? () => false
+      : reactivityTransform === true
+      ? createFilter(/\.(j|t)sx?$/, /node_modules/)
+      : createFilter(reactivityTransform)
 
   return {
     name: 'vite:vue2',
@@ -160,16 +167,16 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
         return
       }
       if (!filter(filename) && !query.vue) {
-        // if (
-        //   !query.vue &&
-        //   refTransformFilter(filename) &&
-        //   options.compiler.shouldTransformRef(code)
-        // ) {
-        //   return options.compiler.transformRef(code, {
-        //     filename,
-        //     sourceMap: true
-        //   })
-        // }
+        if (
+          !query.vue &&
+          refTransformFilter(filename) &&
+          options.compiler.shouldTransformRef(code)
+        ) {
+          return options.compiler.transformRef(code, {
+            filename,
+            sourceMap: true
+          })
+        }
         return
       }
 
