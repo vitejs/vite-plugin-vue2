@@ -35,9 +35,7 @@ export function resolveScript(
     return cached
   }
 
-  let resolved: SFCScriptBlock | null = null
-
-  resolved = options.compiler.compileScript(descriptor, {
+  const resolved = options.compiler.compileScript(descriptor, {
     ...options.script,
     id: descriptor.id,
     isProd: options.isProduction,
