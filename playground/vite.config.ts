@@ -17,11 +17,11 @@ const config = defineConfig({
       name: 'customBlock',
       transform(code, id) {
         if (/type=custom/i.test(id)) {
-          const transformedAssginment = code
+          const transformedAssignment = code
             .trim()
             .replace(/export default/, 'const __customBlock =')
           return {
-            code: `${transformedAssginment}
+            code: `${transformedAssignment}
             export default function (Comp) {
               if (!Comp.__customBlock) {
                 Comp.__customBlock = {};
