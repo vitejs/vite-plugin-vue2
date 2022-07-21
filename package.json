@@ -40,7 +40,6 @@
     "vue": "^2.7.0-0"
   },
   "devDependencies": {
-    "@rollup/pluginutils": "^4.2.1",
     "@types/fs-extra": "^9.0.13",
     "conventional-changelog-cli": "^2.2.2",
     "debug": "^4.3.4",
