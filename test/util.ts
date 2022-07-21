@@ -52,7 +52,7 @@ export async function startServer(isBuild: boolean) {
 
   await new Promise(resolve => {
     devServer.stdout.on('data', (data: Buffer) => {
-      if (data.toString().match('running')) {
+      if (data.toString().match('ready in')) {
         console.log('dev server running.')
         resolve('')
       }
@@ -61,7 +61,7 @@ export async function startServer(isBuild: boolean) {
 
   console.log('launching browser')
   page = await browser.newPage()
-  await page.goto('http://localhost:3000')
+  await page.goto('http://localhost:5173')
   return page
 }
 

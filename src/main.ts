@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import type { SFCBlock, SFCDescriptor } from 'vue/compiler-sfc'
 import type { PluginContext, TransformPluginContext } from 'rollup'
 import type { RawSourceMap } from 'source-map'
@@ -118,7 +118,9 @@ var __component__ = /*#__PURE__*/__normalizer(
       output.push(`export const _rerender_only = true`)
     }
     output.push(
-      `import.meta.hot.accept(({ default: updated, _rerender_only }) => {`,
+      `import.meta.hot.accept(mod => {`,
+      `  if (!mod) return`,
+      `  const { default: updated, _rerender_only } = mod`,
       `  if (_rerender_only) {`,
       `    __VUE_HMR_RUNTIME__.rerender(${id}, updated)`,
       `  } else {`,

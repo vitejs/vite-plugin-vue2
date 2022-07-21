@@ -5,7 +5,7 @@ import type { PluginContext, TransformPluginContext } from 'rollup'
 import { getResolvedScript } from './script'
 import { createRollupError } from './utils/error'
 import type { ResolvedOptions } from '.'
-import path from 'path'
+import path from 'node:path'
 import slash from 'slash'
 import { HMR_RUNTIME_ID } from './utils/hmrRuntime'
 

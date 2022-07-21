@@ -24,7 +24,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "engines": {
-    "node": ">=14.6.0"
+    "node": "^14.18.0 || >= 16.0.0"
   },
   "repository": {
     "type": "git",
@@ -36,11 +36,10 @@
   },
   "homepage": "https://github.com/vitejs/vite-plugin-vue2/#readme",
   "peerDependencies": {
-    "vite": ">=2.5.10",
+    "vite": "^3.0.0",
     "vue": "^2.7.0-0"
   },
   "devDependencies": {
-    "@rollup/pluginutils": "^4.2.1",
     "@types/fs-extra": "^9.0.13",
     "conventional-changelog-cli": "^2.2.2",
     "debug": "^4.3.4",
@@ -58,7 +57,7 @@
     "slash": "^3.0.0",
     "source-map": "^0.6.1",
     "unbuild": "^0.7.4",
-    "vite": "^2.9.12",
+    "vite": "^3.0.0",
     "vitest": "^0.15.1",
     "vue": "^2.7.0-beta.8"
   }
