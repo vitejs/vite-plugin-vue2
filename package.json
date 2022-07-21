@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/vitejs/vite-plugin-vue2/#readme",
   "peerDependencies": {
-    "vite": ">=2.5.10",
+    "vite": "^3.0.0",
     "vue": "^2.7.0-0"
   },
   "devDependencies": {
@@ -58,7 +58,7 @@
     "slash": "^3.0.0",
     "source-map": "^0.6.1",
     "unbuild": "^0.7.4",
-    "vite": "^2.9.12",
+    "vite": "^3.0.0",
     "vitest": "^0.15.1",
     "vue": "^2.7.0-beta.8"
   }
