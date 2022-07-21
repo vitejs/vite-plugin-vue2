@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import { createFilter } from 'vite'
 import type { Plugin, ViteDevServer } from 'vite'
 import type {
