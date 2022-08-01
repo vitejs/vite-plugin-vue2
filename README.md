@@ -18,7 +18,6 @@ export interface Options {
   include?: string | RegExp | (string | RegExp)[]
   exclude?: string | RegExp | (string | RegExp)[]
 
-  ssr?: boolean
   isProduction?: boolean
 
   // options to pass on to vue/compiler-sfc
