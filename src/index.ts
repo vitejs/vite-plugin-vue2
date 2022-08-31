@@ -29,9 +29,19 @@ export interface Options {
   isProduction?: boolean
 
   // options to pass on to vue/compiler-sfc
-  script?: Partial<SFCScriptCompileOptions>
-  template?: Partial<SFCTemplateCompileOptions>
-  style?: Partial<SFCStyleCompileOptions>
+  script?: Partial<Pick<SFCScriptCompileOptions, 'babelParserPlugins'>>
+  template?: Partial<
+    Pick<
+      SFCTemplateCompileOptions,
+      | 'compiler'
+      | 'compilerOptions'
+      | 'preprocessOptions'
+      | 'transpileOptions'
+      | 'transformAssetUrls'
+      | 'transformAssetUrlsOptions'
+    >
+  >
+  style?: Partial<Pick<SFCStyleCompileOptions, 'trim'>>
 
   // customElement?: boolean | string | RegExp | (string | RegExp)[]
   // reactivityTransform?: boolean | string | RegExp | (string | RegExp)[]
