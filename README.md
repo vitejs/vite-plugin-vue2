@@ -32,7 +32,6 @@ export interface Options {
       | 'transpileOptions'
       | 'transformAssetUrls'
       | 'transformAssetUrlsOptions'
-      | 'isTS'
     >
   >
   style?: Partial<Pick<SFCStyleCompileOptions, 'trim'>>
