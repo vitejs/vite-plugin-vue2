@@ -45,7 +45,7 @@ export interface Options {
 
   // customElement?: boolean | string | RegExp | (string | RegExp)[]
   // reactivityTransform?: boolean | string | RegExp | (string | RegExp)[]
-  // compiler?: typeof _compiler
+  compiler?: typeof _compiler
 }
 
 export interface ResolvedOptions extends Options {
@@ -113,7 +113,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     },
 
     buildStart() {
-      options.compiler = resolveCompiler(options.root)
+      options.compiler = options.compiler || resolveCompiler(options.root)
     },
 
     async resolveId(id) {
