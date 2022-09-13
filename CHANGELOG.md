@@ -1,3 +1,21 @@
+## [2.0.0](https://github.com/vitejs/vite-plugin-vue2/compare/v1.1.2...v2.0.0) (2022-09-13)
+
+
+### Breaking Changes
+
+* only support Vite 3 ([#28](https://github.com/vitejs/vite-plugin-vue2/pull/28))
+
+### Bug Fixes
+
+* handle undefined on import.meta.hot.accept ([b668430](https://github.com/vitejs/vite-plugin-vue2/commit/b66843045b16516fc91512c67c4f87b6d3f4d45e))
+
+
+### Features
+
+* add compiler option in Options ([#45](https://github.com/vitejs/vite-plugin-vue2/issues/45)) ([fb47586](https://github.com/vitejs/vite-plugin-vue2/commit/fb4758637c0506e9b0e7ea6883568287f60ae077))
+
+
+
 ## [1.1.2](https://github.com/vitejs/vite-plugin-vue2/compare/v1.1.1...v1.1.2) (2022-07-01)
 
 
