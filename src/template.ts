@@ -133,8 +133,8 @@ function resolveTemplateCompilerOptions(
     isFunctional: !!block.attrs.functional,
     optimizeSSR: ssr,
     transformAssetUrlsOptions: {
-      ...options.template?.transformAssetUrlsOptions,
-      ...assetUrlOptions
+      ...assetUrlOptions,
+      ...options.template?.transformAssetUrlsOptions
     },
     preprocessLang: block.lang,
     preprocessOptions,
