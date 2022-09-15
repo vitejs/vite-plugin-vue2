@@ -4,10 +4,10 @@
 
 ```js
 // vite.config.js
-import vue from '@vitejs/plugin-vue2'
+import vuePlugin from '@vitejs/plugin-vue2'
 
 export default {
-  plugins: [vue()]
+  plugins: [vuePlugin()]
 }
 ```
 
@@ -59,7 +59,7 @@ import _imports_0 from '../image.png'
 <img :src="_imports_0" />
 ```
 
-By default the following tag/attribute combinations are transformed, and can be configured using the `template.transformAssetUrls` option.
+By default, the following tag/attribute combinations are transformed, and can be configured using the `template.transformAssetUrls` option.
 
 ```js
 {
@@ -76,11 +76,11 @@ Note that only attribute values that are static strings are transformed. Otherwi
 ## Example for passing options to `vue/compiler-sfc`:
 
 ```ts
-import vue from '@vitejs/plugin-vue2'
+import vuePlugin from '@vitejs/plugin-vue2'
 
 export default {
   plugins: [
-    vue({
+    vuePlugin({
       template: {
         compilerOptions: {
           // ...
@@ -97,7 +97,7 @@ export default {
 ## Example for transforming custom blocks
 
 ```ts
-import vue from '@vitejs/plugin-vue2'
+import vuePlugin from '@vitejs/plugin-vue2'
 
 const vueI18nPlugin = {
   name: 'vue-i18n',
@@ -115,7 +115,7 @@ const vueI18nPlugin = {
 }
 
 export default {
-  plugins: [vue(), vueI18nPlugin]
+  plugins: [vuePlugin(), vueI18nPlugin]
 }
 ```
 
