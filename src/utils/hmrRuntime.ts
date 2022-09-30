@@ -185,7 +185,8 @@ __VUE_HMR_RUNTIME__.reload = tryWrap(function (id, options) {
     }
   }
   record.instances.slice().forEach(function (instance) {
-    if (instance.$vnode && instance.$vnode.context) {
+    if (record.options.functional) instance.$forceUpdate()
+    else if (instance.$vnode && instance.$vnode.context) {
       instance.$vnode.context.$forceUpdate()
     } else {
       console.warn(
