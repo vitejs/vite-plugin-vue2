@@ -48,6 +48,10 @@ export default function normalizeComponent (
       if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
         context = __VUE_SSR_CONTEXT__
       }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
       if (context) {
         if (!context.modules) {
           context.modules = new Set();
