@@ -39,10 +39,21 @@ export default function normalizeComponent (
   var hook
   if (moduleIdentifier) { // server build
     hook = function (context) {
-      if (!context.modules) {
-        context.modules = new Set();
+      // 2.3 injection
+      context =
+          context || // cached call
+          (this.$vnode && this.$vnode.ssrContext) || // stateful
+          (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
       }
-      context.modules.add(moduleIdentifier)
+      if (context) {
+        if (!context.modules) {
+          context.modules = new Set();
+        }
+        context.modules.add(moduleIdentifier)
+      }
     }
     // used by ssr in case component is cached and beforeCreate
     // never gets called
