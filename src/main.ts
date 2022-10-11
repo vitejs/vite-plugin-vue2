@@ -3,6 +3,7 @@ import type { SFCBlock, SFCDescriptor } from 'vue/compiler-sfc'
 import type { PluginContext, TransformPluginContext } from 'rollup'
 import type { RawSourceMap } from 'source-map'
 import { transformWithEsbuild } from 'vite'
+import os from 'node:os';
 import {
   createDescriptor,
   getPrevDescriptor,
@@ -15,6 +16,15 @@ import { createRollupError } from './utils/error'
 import type { ResolvedOptions } from '.'
 import { NORMALIZER_ID } from './utils/componentNormalizer'
 import { HMR_RUNTIME_ID } from './utils/hmrRuntime'
+
+const isWindows = os.platform() === 'win32';
+function slash(p: string) {
+  return p.replace(/\\/g, '/');
+}
+function normalizePath(id: string) {
+  return path.posix.normalize(isWindows ? slash(id) : id);
+}
+
 
 export async function transformMain(
   code: string,
@@ -71,6 +81,7 @@ export async function transformMain(
     stylesCode,
     customBlocksCode
   ]
+  const moduleIdentifier = normalizePath(path.relative(options.root, filename));
 
   output.push(
     `/* normalize component */
@@ -82,7 +93,7 @@ var __component__ = /*#__PURE__*/__normalizer(
   ${hasFunctional ? 'true' : 'false'},
   ${hasCssModules ? `_sfc_injectStyles` : `null`},
   ${hasScoped ? JSON.stringify(descriptor.id) : 'null'},
-  null,
+  ${ssr ? `"${moduleIdentifier}"` : null},
   null
 )`
   )
