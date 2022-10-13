@@ -39,7 +39,7 @@ export async function transformMain(
 
   // feature information
   const hasScoped = descriptor.styles.some(s => s.scoped)
-  const hasCssModules = descriptor.styles.some(s => s.module)
+  const hasCssModules = descriptor.styles.some(s => s.module && !!s.content && !!s.content.trim())
   const hasFunctional =
     descriptor.template && descriptor.template.attrs.functional
 
@@ -279,6 +279,7 @@ async function genStyleCode(
   if (descriptor.styles.length) {
     for (let i = 0; i < descriptor.styles.length; i++) {
       const style = descriptor.styles[i]
+      if (!style.src && (!style.content || !style.content.trim())) continue
       if (style.src) {
         await linkSrcToDescriptor(
           style.src,
