@@ -26,6 +26,7 @@ export interface Options {
   include?: string | RegExp | (string | RegExp)[]
   exclude?: string | RegExp | (string | RegExp)[]
 
+  normalizerId?: string
   isProduction?: boolean
 
   // options to pass on to vue/compiler-sfc
@@ -50,6 +51,7 @@ export interface Options {
 
 export interface ResolvedOptions extends Options {
   compiler: typeof _compiler
+  normalizerId: string
   root: string
   sourceMap: boolean
   cssDevSourcemap: boolean
@@ -60,7 +62,8 @@ export interface ResolvedOptions extends Options {
 export default function vuePlugin(rawOptions: Options = {}): Plugin {
   const {
     include = /\.vue$/,
-    exclude
+    exclude,
+    normalizerId = NORMALIZER_ID
     // customElement = /\.ce\.vue$/,
     // reactivityTransform = false
   } = rawOptions
@@ -73,6 +76,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     ...rawOptions,
     include,
     exclude,
+    normalizerId,
     // customElement,
     // reactivityTransform,
     root: process.cwd(),
@@ -118,7 +122,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
 
     async resolveId(id) {
       // component export helper
-      if (id === NORMALIZER_ID || id === HMR_RUNTIME_ID) {
+      if (id === normalizerId || id === HMR_RUNTIME_ID) {
         return id
       }
       // serve sub-part requests (*?vue) as virtual modules
@@ -129,7 +133,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
 
     load(id, opt) {
       const ssr = opt?.ssr === true
-      if (id === NORMALIZER_ID) {
+      if (id === normalizerId) {
         return normalizerCode
       }
       if (id === HMR_RUNTIME_ID) {
@@ -185,7 +189,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
 
       if (!query.vue) {
         // main request
-        return transformMain(code, filename, options, this, ssr)
+        return transformMain(code, filename, options, this, ssr, normalizerId)
       } else {
         // sub block request
         const descriptor = query.src

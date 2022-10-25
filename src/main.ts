@@ -13,7 +13,6 @@ import { transformTemplateInMain } from './template'
 import { isOnlyTemplateChanged } from './handleHotUpdate'
 import { createRollupError } from './utils/error'
 import type { ResolvedOptions } from '.'
-import { NORMALIZER_ID } from './utils/componentNormalizer'
 import { HMR_RUNTIME_ID } from './utils/hmrRuntime'
 
 export async function transformMain(
@@ -21,7 +20,8 @@ export async function transformMain(
   filename: string,
   options: ResolvedOptions,
   pluginContext: TransformPluginContext,
-  ssr: boolean
+  ssr: boolean,
+  normalizerId: string
   // asCustomElement: boolean
 ) {
   const { devServer, isProduction, devToolsEnabled } = options
@@ -74,7 +74,7 @@ export async function transformMain(
 
   output.push(
     `/* normalize component */
-import __normalizer from "${NORMALIZER_ID}"
+import __normalizer from "${normalizerId}"
 var __component__ = /*#__PURE__*/__normalizer(
   _sfc_main,
   _sfc_render,
