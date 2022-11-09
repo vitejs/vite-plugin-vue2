@@ -1,3 +1,12 @@
+## [2.0.1](https://github.com/vitejs/vite-plugin-vue2/compare/v2.0.0...v2.0.1) (2022-11-09)
+
+
+### Bug Fixes
+
+* allow overwriting template.transformAssetUrls.includeAbsolute ([#48](https://github.com/vitejs/vite-plugin-vue2/issues/48)) ([7db0767](https://github.com/vitejs/vite-plugin-vue2/commit/7db076705b79d383b84e13cb375a7aa9f9f1545c))
+
+
+
 ## [2.0.0](https://github.com/vitejs/vite-plugin-vue2/compare/v1.1.2...v2.0.0) (2022-09-13)
 
 
