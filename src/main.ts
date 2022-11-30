@@ -149,7 +149,11 @@ var __component__ = /*#__PURE__*/__normalizer(
     const { code, map } = await transformWithEsbuild(
       resolvedCode,
       filename,
-      { loader: 'ts', sourcemap: options.sourceMap },
+      {
+        loader: 'ts',
+        target: 'esnext',
+        sourcemap: options.sourceMap
+      },
       resolvedMap
     )
     resolvedCode = code
