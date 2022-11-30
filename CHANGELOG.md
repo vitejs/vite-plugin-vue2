@@ -1,3 +1,18 @@
+# [2.1.0](https://github.com/vitejs/vite-plugin-vue2/compare/v2.0.1...v2.1.0) (2022-11-30)
+
+
+### Bug Fixes
+
+* **esbuild:** transpile with esnext in dev ([#60](https://github.com/vitejs/vite-plugin-vue2/issues/60)) ([bd87898](https://github.com/vitejs/vite-plugin-vue2/commit/bd87898be4d02bd52cc8af0072db9e59a5dbd8fa))
+* invalidate script module cache when it changed in hot update ([#67](https://github.com/vitejs/vite-plugin-vue2/issues/67)) ([b8e6133](https://github.com/vitejs/vite-plugin-vue2/commit/b8e6133b54bce820d93d0e4f9a9982198cdd60ee))
+
+
+### Features
+
+* resolve complier from peer dep when unable to resolve from the root ([#68](https://github.com/vitejs/vite-plugin-vue2/issues/68)) ([0ea62d2](https://github.com/vitejs/vite-plugin-vue2/commit/0ea62d2b4f8a84e87b332f4f2749aeba7f8e3145))
+
+
+
 ## [2.0.1](https://github.com/vitejs/vite-plugin-vue2/compare/v2.0.0...v2.0.1) (2022-11-09)
 
 
