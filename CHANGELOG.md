@@ -1,3 +1,12 @@
+# [2.2.0](https://github.com/vitejs/vite-plugin-vue2/compare/v2.1.0...v2.2.0) (2022-12-10)
+
+
+### Features
+
+* Update for Vite 4.x support ([[#71](https://github.com/vitejs/vite-plugin-vue2/issues/71)](https://github.com/vitejs/vite-plugin-vue2/issues/71)) ([#72](https://github.com/vitejs/vite-plugin-vue2/issues/72)) ([d2360be](https://github.com/vitejs/vite-plugin-vue2/commit/d2360be65b37cdf51a27843925d352866dff23d1))
+
+
+
 # [2.1.0](https://github.com/vitejs/vite-plugin-vue2/compare/v2.0.1...v2.1.0) (2022-11-30)
 
 
