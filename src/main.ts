@@ -74,7 +74,7 @@ export async function transformMain(
 
   output.push(
     `/* normalize component */
-import __normalizer from "${NORMALIZER_ID}"
+import {normalizeComponent as __normalizer, getExports as __getExports} from "${NORMALIZER_ID}"
 var __component__ = /*#__PURE__*/__normalizer(
   _sfc_main,
   _sfc_render,
@@ -137,7 +137,7 @@ var __component__ = /*#__PURE__*/__normalizer(
 
   let resolvedMap: RawSourceMap | undefined = scriptMap
 
-  output.push(`export default __component__.exports`)
+  output.push(`export default /*#__PURE__*/ __getExports(__component__)`)
 
   // handle TS transpilation
   let resolvedCode = output.join('\n')
