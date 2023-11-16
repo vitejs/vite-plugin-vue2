@@ -18,7 +18,7 @@ jobs:
       - name: Set node version to 16
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version-file: '.node-version'
           cache: 'pnpm'
 
       - run: pnpm install
