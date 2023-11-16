@@ -3,6 +3,7 @@
   "version": "2.2.0",
   "license": "MIT",
   "author": "Evan You",
+  "packageManager": "pnpm@7.33.5",
   "files": [
     "dist"
   ],
