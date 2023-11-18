@@ -52,9 +52,11 @@ export default function normalizeComponent (
       if (injectStyles) {
         injectStyles.call(this, context)
       }
-      // register component module identifier for async chunk inference
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
+      if (context) {
+        if (!context.modules) {
+          context.modules = new Set();
+        }
+        context.modules.add(moduleIdentifier)
       }
     }
     // used by ssr in case component is cached and beforeCreate
