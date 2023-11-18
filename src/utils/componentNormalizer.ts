@@ -4,7 +4,12 @@ export const NORMALIZER_ID = '\0plugin-vue2:normalizer'
 // This module is a runtime utility for cleaner component module output and will
 // be included in the final webpack user bundle.
 export const normalizerCode = `
-export default function normalizeComponent (
+// Used to facilitate tree-shaking since property access is not guaranteed to be pure
+export function getExports(component) {
+  return component.exports
+}
+
+export function normalizeComponent (
     scriptExports,
     render,
     staticRenderFns,
