@@ -1,5 +1,10 @@
 # @vitejs/plugin-vue2 [![npm](https://img.shields.io/npm/v/@vitejs/plugin-vue2.svg)](https://npmjs.com/package/@vitejs/plugin-vue2)
 
+> [!CAUTION]
+> Vue 2 has reached EOL, and this project is no longer actively maintained.
+
+---
+
 > Note: this plugin only works with Vue@^2.7.0.
 
 ```js

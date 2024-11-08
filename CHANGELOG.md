@@ -1,3 +1,21 @@
+## [2.3.1](https://github.com/vitejs/vite-plugin-vue2/compare/v2.3.0...v2.3.1) (2023-11-16)
+
+
+### Bug Fixes
+
+* exports types ([5f48994](https://github.com/vitejs/vite-plugin-vue2/commit/5f489944477ed6732c3bb36dd18f029fad970c9d))
+
+
+
+# [2.3.0](https://github.com/vitejs/vite-plugin-vue2/compare/v2.2.0...v2.3.0) (2023-11-16)
+
+
+### Features
+
+* Vite 5 Support ([#94](https://github.com/vitejs/vite-plugin-vue2/issues/94)) ([f080464](https://github.com/vitejs/vite-plugin-vue2/commit/f0804641009b42f34ef5c785fe8caf746ec94fec))
+
+
+
 # [2.2.0](https://github.com/vitejs/vite-plugin-vue2/compare/v2.1.0...v2.2.0) (2022-12-10)
 
 
