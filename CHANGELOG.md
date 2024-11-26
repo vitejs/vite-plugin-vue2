@@ -1,3 +1,12 @@
+## [2.3.2](https://github.com/vitejs/vite-plugin-vue2/compare/v2.3.1...v2.3.2) (2024-11-26)
+
+
+### Features
+
+* support vite 6 ([#104](https://github.com/vitejs/vite-plugin-vue2/issues/104)) ([80a7442](https://github.com/vitejs/vite-plugin-vue2/commit/80a74425bbae7b5eaf549d32d30b2d046912a797))
+
+
+
 ## [2.3.1](https://github.com/vitejs/vite-plugin-vue2/compare/v2.3.0...v2.3.1) (2023-11-16)
 
 
