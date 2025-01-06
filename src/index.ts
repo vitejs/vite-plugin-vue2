@@ -1,5 +1,5 @@
 import fs from 'node:fs'
-import { createFilter } from 'vite'
+import { createFilter, normalizePath } from 'vite'
 import type { Plugin, ViteDevServer } from 'vite'
 import type {
   SFCBlock,
@@ -85,6 +85,12 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     name: 'vite:vue2',
 
     handleHotUpdate(ctx) {
+      ctx.server.ws.send({
+        type: 'custom',
+        event: 'file-changed',
+        data: { file: normalizePath(ctx.file) },
+      })
+
       if (!filter(ctx.file)) {
         return
       }

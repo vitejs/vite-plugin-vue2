@@ -80,6 +80,14 @@ export function declareTests(isBuild: boolean) {
       )
       await expectByPolling(() => getText('.hmr-increment'), 'count is 1337')
     })
+
+    test('should reload when relies file changed', async () => {
+      await expectByPolling(() => getText('.hmr-number'), '100')
+      await updateFile('hmr/lib.js', content =>
+        content.replace('100', '200')
+      )
+      await expectByPolling(() => getText('.hmr-number'), '200')
+    })
   }
 
   test('SFC <style scoped>', async () => {
