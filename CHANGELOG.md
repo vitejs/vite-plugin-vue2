@@ -1,3 +1,18 @@
+## [2.3.4](https://github.com/vitejs/vite-plugin-vue2/compare/v2.3.3...v2.3.4) (2025-01-06)
+
+### Bug Fixes
+热更新失效 #7 ([#7](https://github.com/vitejs/vite-plugin-vue/issues/7))
+
+fix(hmr): should reload if relies file changed after re-render #471 ([#471](https://github.com/vitejs/vite-plugin-vue/pull/471))
+
+Fix description: The bugs in vite-plugin-vue also occur in vite-plugin-vue2, and the same solution can be used to fix them.
+
+### Features
+
+* feat: Upgrade from version 2.7.0-beta.8 to version 2.7.16.
+
+
+
 ## [2.3.3](https://github.com/vitejs/vite-plugin-vue2/compare/v2.3.2...v2.3.3) (2024-11-26)
 
 
