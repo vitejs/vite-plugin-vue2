@@ -1,6 +1,6 @@
 {
-  "name": "@vitejs/plugin-vue2",
-  "version": "2.3.3",
+  "name": "@zstings/vite-plugin-vue2",
+  "version": "2.3.4",
   "license": "MIT",
   "author": "Evan You",
   "packageManager": "pnpm@7.33.5",
@@ -29,13 +29,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vitejs/vite-plugin-vue2.git",
+    "url": "git+https://github.com/zstings/vite-plugin-vue2.git",
     "directory": "packages/plugin-vue"
   },
   "bugs": {
-    "url": "https://github.com/vitejs/vite-plugin-vue2/issues"
+    "url": "https://github.com/zstings/vite-plugin-vue2/issues"
   },
-  "homepage": "https://github.com/vitejs/vite-plugin-vue2/#readme",
+  "homepage": "https://github.com/zstings/vite-plugin-vue2/#readme",
   "peerDependencies": {
     "vite": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0",
     "vue": "^2.7.0-0"
@@ -61,5 +61,9 @@
     "vite": "^3.0.0",
     "vitest": "^0.15.1",
     "vue": "^2.7.0-beta.8"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

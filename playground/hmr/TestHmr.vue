@@ -1,8 +1,10 @@
 <script>
+import { test } from './lib.js'
 export default {
   data() {
     return {
       count: 0,
+      number: test()
     }
   },
 }
@@ -20,5 +22,6 @@ export default {
         &gt;&gt;&gt; {{ count }} &lt;&lt;&lt;
       </button>
     </p>
+    <span class="hmr-number">{{ number }}</span>
   </div>
 </template>

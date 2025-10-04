@@ -2,7 +2,7 @@ import path from 'node:path'
 import type { SFCBlock, SFCDescriptor } from 'vue/compiler-sfc'
 import type { PluginContext, TransformPluginContext } from 'rollup'
 import type { RawSourceMap } from 'source-map'
-import { transformWithEsbuild } from 'vite'
+import { transformWithEsbuild, normalizePath } from 'vite'
 import {
   createDescriptor,
   getPrevDescriptor,
@@ -110,12 +110,24 @@ var __component__ = /*#__PURE__*/__normalizer(
       `  __VUE_HMR_RUNTIME__.createRecord(${id}, __component__.options)`,
       `}`
     )
+    output.push(
+      `import.meta.hot.on('file-changed', ({ file }) => {`,
+      `  __VUE_HMR_RUNTIME__.CHANGED_FILE = file`,
+      `})`,
+    )
     // check if the template is the only thing that changed
     if (
       hasFunctional ||
       (prevDescriptor && isOnlyTemplateChanged(prevDescriptor, descriptor))
     ) {
-      output.push(`export const _rerender_only = true`)
+      // https://github.com/vitejs/vite-plugin-vue/issues/7
+      // #7 only consider re-render if the HMR is triggered by the current component,
+      // otherwise reload. Due to vite will cache the transform result. If the HMR
+      // is triggered by other files that the current component relies on, a reload
+      // is required.
+      output.push(
+        `export const _rerender_only = __VUE_HMR_RUNTIME__.CHANGED_FILE === ${JSON.stringify(normalizePath(filename))}`,
+      )
     }
     output.push(
       `import.meta.hot.accept(mod => {`,
