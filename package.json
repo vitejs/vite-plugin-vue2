@@ -1,6 +1,6 @@
 {
   "name": "@vitejs/plugin-vue2",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "license": "MIT",
   "author": "Evan You",
   "packageManager": "pnpm@7.33.5",
