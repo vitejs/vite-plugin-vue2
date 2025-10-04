@@ -151,7 +151,7 @@ var __component__ = /*#__PURE__*/__normalizer(
       filename,
       {
         loader: 'ts',
-        target: 'esnext',
+        target: options.target,
         sourcemap: options.sourceMap
       },
       resolvedMap

@@ -46,6 +46,13 @@ export interface Options {
   // customElement?: boolean | string | RegExp | (string | RegExp)[]
   // reactivityTransform?: boolean | string | RegExp | (string | RegExp)[]
   compiler?: typeof _compiler
+
+  /**
+   * The options for esbuild to transform script code
+   * @default 'esnext'
+   * @example 'esnext' | ['esnext','chrome58','firefox57','safari11','edge16','node12']
+   */
+  target?: string | string[]
 }
 
 export interface ResolvedOptions extends Options {
@@ -55,6 +62,7 @@ export interface ResolvedOptions extends Options {
   cssDevSourcemap: boolean
   devServer?: ViteDevServer
   devToolsEnabled?: boolean
+  target: string | string[]
 }
 
 export default function vuePlugin(rawOptions: Options = {}): Plugin {
@@ -78,7 +86,8 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
     root: process.cwd(),
     sourceMap: true,
     cssDevSourcemap: false,
-    devToolsEnabled: process.env.NODE_ENV !== 'production'
+    devToolsEnabled: process.env.NODE_ENV !== 'production',
+    target: rawOptions.target ?? 'esnext'
   }
 
   return {
