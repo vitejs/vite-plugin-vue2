@@ -106,6 +106,20 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
           replacement: 'vue/dist/vue.runtime.esm.js'
         })
       }
+
+      // suppress warnings for non-recognized pseudo selectors from lightningcss
+      const _warn = config.logger.warn
+      config.logger.warn = (...args) => {
+        const msg = args[0]
+        if (
+          msg.match(
+            /\[lightningcss\] '(v-deep|deep)' is not recognized as a valid pseudo-/,
+          )
+        ) {
+          return
+        }
+        _warn(...args)
+      }
     },
 
     configureServer(server) {
